@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="A minimal self-editable portfolio builder for students, freelancers and creators.">
+  <meta name="theme-color" content="#171717">
   <title>My Portfolio — Portfolio Builder</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,14 +21,12 @@
   </header>
 
   <main>
-    <!-- Editor -->
-    <section id="editor" class="editor-wrap">
+    <section id="editor" class="editor-wrap" aria-label="Portfolio editor">
       <div class="editor-card">
         <div class="editor-head">
           <div>
             <p class="eyebrow">PERSONAL PORTFOLIO BUILDER</p>
             <h1>Make it yours.</h1>
-            <p class="muted">Fill in your details. Your portfolio updates instantly.</p>
           </div>
           <button id="closeEditor" class="icon-btn" aria-label="Close editor">×</button>
         </div>
@@ -36,22 +35,39 @@
           <div class="form-section">
             <h2>01 · Personal details</h2>
             <div class="form-grid">
-              <label>Full name<input id="name" placeholder="e.g. Aarav Sharma"></label>
-              <label>Role / headline<input id="role" placeholder="e.g. Student • Web Developer"></label>
-              <label>Email<input id="email" type="email" placeholder="you@example.com"></label>
+              <label>Full name<input id="name" autocomplete="name" placeholder="e.g. Aarav Sharma"></label>
+              <label>Role / headline<input id="role" placeholder="e.g. Web Designer & Content Writer"></label>
+              <label>Email<input id="email" type="email" autocomplete="email" placeholder="you@example.com"></label>
               <label>Location<input id="location" placeholder="e.g. Jaipur, India"></label>
+              <label>Website URL<input id="website" type="url" placeholder="https://yourwebsite.com"></label>
+              <label>Resume URL<input id="resume" type="url" placeholder="https://example.com/resume.pdf"></label>
               <label>GitHub URL<input id="github" type="url" placeholder="https://github.com/username"></label>
               <label>LinkedIn URL<input id="linkedin" type="url" placeholder="https://linkedin.com/in/username"></label>
             </div>
           </div>
 
           <div class="form-section">
-            <h2>02 · Your introduction</h2>
+            <h2>02 · Profile</h2>
+            <div class="profile-editor">
+              <div class="avatar-editor">
+                <div class="avatar-preview" id="avatarPreview"><span id="avatarInitials">YN</span></div>
+                <div>
+                  <label class="file-label">Profile photo
+                    <input id="photo" type="file" accept="image/png,image/jpeg,image/webp">
+                  </label>
+                  <button type="button" id="removePhoto" class="text-button photo-remove">Remove photo</button>
+                  <p class="field-help">Optional · JPG, PNG or WebP</p>
+                </div>
+              </div>
+            </div>
+
             <label>Short bio
-              <textarea id="bio" rows="4" placeholder="Tell visitors who you are, what you do, and what you are learning."></textarea>
+              <textarea id="bio" rows="4" maxlength="500" placeholder="Tell visitors who you are, what you do, and what you are learning."></textarea>
+              <span class="char-count" id="bioCount">0 / 500</span>
             </label>
+
             <label>Availability
-              <input id="availability" placeholder="Open to internships, freelance projects & collaborations">
+              <input id="availability" placeholder="Open to freelance projects, internships & collaborations">
             </label>
           </div>
 
@@ -71,31 +87,53 @@
             <div id="projectsEditor"></div>
           </div>
 
+          <div class="form-section">
+            <h2>05 · Appearance</h2>
+            <div class="appearance-row">
+              <label class="color-field">Accent color
+                <div class="color-control">
+                  <input id="accent" type="color" value="#c8f36a" aria-label="Choose accent color">
+                  <span id="accentValue">#C8F36A</span>
+                </div>
+              </label>
+              <label class="toggle-field">
+                <span>Compact portfolio</span>
+                <input id="compact" type="checkbox">
+                <small>Use tighter spacing on the public page</small>
+              </label>
+            </div>
+          </div>
+
           <div class="form-footer">
             <button type="button" id="resetBtn" class="text-button">Reset</button>
-            <button type="submit" class="save-btn">Save portfolio</button>
+            <div class="footer-actions">
+              <button type="button" id="previewBtn" class="secondary-btn">Preview</button>
+              <button type="submit" class="save-btn">Save portfolio</button>
+            </div>
           </div>
         </form>
       </div>
     </section>
 
-    <!-- Portfolio -->
     <div id="portfolio">
       <section class="hero">
         <div class="hero-inner">
           <div class="hero-copy">
-            <p class="eyebrow" id="heroRole">STUDENT • CREATOR • FREELANCER</p>
+            <p class="eyebrow" id="heroRole">YOUR ROLE / HEADLINE</p>
             <h1>Hi, I'm <span id="viewName">Your Name</span>.</h1>
-            <p class="hero-text" id="viewBio">Add a short introduction about yourself, your interests, and the kind of opportunities you're looking for.</p>
+            <p class="hero-text" id="viewBio">A short introduction about you, your work, and what you are looking for.</p>
             <div class="hero-actions">
-              <a id="emailBtn" class="button dark" href="mailto:you@example.com">Get in touch</a>
+              <a id="emailBtn" class="button dark" href="#contact">Get in touch</a>
               <a class="button light" href="#projects">See my work</a>
+              <a id="resumeBtn" class="button light optional-action" href="#" target="_blank" rel="noreferrer">Resume ↗</a>
             </div>
           </div>
+
           <div class="identity-card">
             <div class="initials" id="initials">YN</div>
+            <img id="profileImage" class="profile-image" alt="Profile photo" hidden>
             <p>Based in <strong id="viewLocation">Your location</strong></p>
-            <div class="status"><i></i><span id="viewAvailability">Open to opportunities</span></div>
+            <div class="status"><i></i><span id="viewAvailability">Available for opportunities</span></div>
           </div>
         </div>
       </section>
@@ -124,7 +162,7 @@
         </div>
       </section>
 
-      <section class="contact">
+      <section class="contact" id="contact">
         <div class="content-wide contact-inner">
           <div>
             <div class="section-label">CONTACT</div>
@@ -132,7 +170,8 @@
             <p>Have an opportunity, project, or idea? I'd love to hear from you.</p>
           </div>
           <div class="contact-links">
-            <a id="contactEmail" href="mailto:you@example.com">you@example.com ↗</a>
+            <a id="contactEmail" href="#contact">Add your email ↗</a>
+            <a id="contactWebsite" href="#" target="_blank" rel="noreferrer">Website ↗</a>
             <a id="contactGithub" href="#" target="_blank" rel="noreferrer">GitHub ↗</a>
             <a id="contactLinkedin" href="#" target="_blank" rel="noreferrer">LinkedIn ↗</a>
           </div>
@@ -146,6 +185,7 @@
     </div>
   </main>
 
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="script.js"></script>
 </body>
 </html>
